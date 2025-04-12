@@ -1,8 +1,10 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Restaurant } from "@prisma/client";
 import { ChevronsLeftIcon, ScrollTextIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface RestaurantHeaderProps {
     restaurant: Pick<Restaurant, 'name' | 'coverImageUrl'>
@@ -17,7 +19,7 @@ const RestaurantHeader = ({restaurant}:RestaurantHeaderProps) => {
                 variant="secondary"
                 size="icon"
                 className="absolute left-4 z-50 rounded-full" 
-                onClick={handleBackClick}
+                onClick={handleBackClick()}
                 >
                     <ChevronsLeftIcon />
 

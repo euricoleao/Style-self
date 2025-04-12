@@ -4,7 +4,6 @@ import { db } from "@/lib/prisma";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import ConsumptionMethodOption from "./components/comsumption-method-option";
-//import { getRestaurantBySlug } from "../data/get-restaurant-by-slug";
 
 interface RestaurantPageProps {
     params: Promise<{ slug: string }>
@@ -55,49 +54,12 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
                     imageUrl="/to_take.jpeg"
 
                 />
-                {/* <Card>
-                    <CardContent className="flex flex-col items-center gap-8 py-8 ">
-                        <div className="relative h-[80px] w-[80px]  ">
-                        <Image src="/dine_in.jpg"
-                              fill alt="para comer aqui"
-                              className="object-contain" />
-                           </div>
-                              
-                        <Button variant="secondary" className="rounded-full">
-                            Para comer aqui
-                        </Button>
-                       
-                    </CardContent>
-
-                </Card>
-
-                <Card>
-                    <CardContent className="flex flex-col items-center gap-8 py-8 ">
-                    <div className="relative h-[80px] w-[80px]  ">
-                        <Image src="/to_take.jpeg" fill
-                               alt="para levar" 
-                               className="object-contain"
-                               />
-                       </div>     
-                        <Button variant="secondary" className="rounded-full">
-                            Para levar
-                        </Button>
-                       
-                    </CardContent>
-
-                </Card>
- */}
-
-
-
+                
 
             </div>
         </div>
 
     );
 }
-
-
-
 
 export default RestaurantPage;

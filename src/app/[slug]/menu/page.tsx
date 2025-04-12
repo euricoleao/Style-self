@@ -1,59 +1,74 @@
-import { Button } from "@/components/ui/button";
+
 import { db } from "@/lib/prisma";
-import { ConsumptionMethod } from "@prisma/client";
-import { ChevronsLeftIcon, ScrollTextIcon } from "lucide-react";
-import Image from "next/image";
+
 import { notFound } from "next/navigation";
+import RestaurantHeader from "./components/header";
+import RestaurantCategories from "./components/categories";
+
 
 interface RestaurantMenuPageProps {
-    params: Promise<{slug: string}>
-    searchParams: Promise<{consumptionMethod: string}>
+    params: Promise<{ slug: string }>
+    searchParams: Promise<{ consumptionMethod: string }>
 }
 
-const isConsumptionMethodValid = (ConsumptionMethod: string) =>{
+const isConsumptionMethodValid = (ConsumptionMethod: string) => {
     return ["DINE_IN", "TAKEAWAY"].includes(ConsumptionMethod.toUpperCase());
 }
 
-const RestaurantMenuPage = async ({params,searchParams}:RestaurantMenuPageProps) => {
-    const {slug} = await params;
-    const {consumptionMethod} = await searchParams;
-    if(!isConsumptionMethodValid(consumptionMethod)){
+const RestaurantMenuPage = async ({
+    params,
+    searchParams
+}: RestaurantMenuPageProps) => {
+    const { slug } = await params;
+    const { consumptionMethod } = await searchParams;
+    if (!isConsumptionMethodValid(consumptionMethod)) {
         return notFound();
     }
-    const restaurant = await db.restaurant.findUnique({ where: { slug } });
-    if (!restaurant){
+    const restaurant = await db.restaurant.findUnique({ where: { slug }, include: {
+        MenuCategories: {
+            include: {
+                products: true,
+            }
+        }
+    } });
+   // console.log(restaurant?.MenuCategories)
+    if (!restaurant) {
         return notFound
     }
     return (
         <div>
-            <div className="relative h-[250px] w-full">
+
+            <RestaurantHeader restaurant={restaurant} />
+            <RestaurantCategories restaurant={restaurant} />
+
+            {/* <div className="relative h-[250px] w-full">
                 <Button
-                variant="secondary"
-                size="icon"
-                className="absolute left-4 z-50 rounded-full" 
-               
+                    variant="secondary"
+                    size="icon"
+                    className="absolute left-4 z-50 rounded-full"
+
                 >
                     <ChevronsLeftIcon />
 
                 </Button>
                 <Image
-                src={restaurant?.coverImageUrl} 
-                alt={restaurant.name} 
-                fill
-                className="object-cover"
+                    src={restaurant?.coverImageUrl}
+                    alt={restaurant.name}
+                    fill
+                    className="object-cover"
                 />
-                  <Button
-                variant="secondary"
-                size="icon"
-                className="absolute right-4 z-50 rounded-full" 
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    className="absolute right-4 z-50 rounded-full"
 
                 >
                     <ScrollTextIcon />
 
-               </Button>
-            </ div>
+                </Button>
+            </ div> */}
         </div>
-     );
+    );
 }
- 
-export default RestaurantMenuPage ;
+
+export default RestaurantMenuPage;
